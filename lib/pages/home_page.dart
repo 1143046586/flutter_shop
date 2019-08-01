@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 import '../server/server_method.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -13,6 +14,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
+    ScreenUtil.instance = ScreenUtil(allowFontScaling: false, height: 1334, width: 750)..init(context);
     return Container(
       child: Scaffold(
         appBar: AppBar(
@@ -44,7 +46,7 @@ class HomePageSWiper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 333,
+      height: ScreenUtil().setWidth(333),
       child: Swiper(
         itemCount: swiperUrl.length,
         itemBuilder: (BuildContext context, index) {
