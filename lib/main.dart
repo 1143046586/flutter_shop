@@ -11,7 +11,7 @@ class MyApp extends StatelessWidget {
         title: "百姓生活+",
         home: IndexPage(),
         debugShowCheckedModeBanner: false,
-        showPerformanceOverlay: true,
+        // showPerformanceOverlay: true,
         theme: ThemeData(primaryColor: Colors.pink),
       ),
     );

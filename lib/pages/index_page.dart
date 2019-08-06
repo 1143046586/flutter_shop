@@ -4,6 +4,7 @@ import './home_page.dart';
 import './serach_page.dart';
 import './cart_page.dart';
 import './user_page.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class IndexPage extends StatefulWidget {
   @override
@@ -24,43 +25,32 @@ class _IndexPageState extends State<IndexPage> {
     UserPage(),
   ];
   int currentIndex = 0;
-  // Widget currentPage;
-  PageController _pageController;
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    // currentPage = pageList[currentIndex];
-    _pageController = new PageController(initialPage: 0);
+
   }
 
   @override
   Widget build(BuildContext context) {
+    ScreenUtil.instance = ScreenUtil(allowFontScaling: false, height: 1334, width: 750)..init(context);
     return Container(
       child: Scaffold(
-        backgroundColor: Color.fromRGBO(255, 244, 244, 1),
-        bottomNavigationBar: BottomNavigationBar(
-          type: BottomNavigationBarType.fixed,
-          items: bottomBars,
-          currentIndex: currentIndex,
-          onTap: (index) {
-            setState(() {
-              currentIndex = index;
-              _pageController.animateToPage(index,
-                  duration: new Duration(milliseconds: 500), curve: new ElasticInOutCurve(4));
-            });
-          },
-        ),
-        body: PageView(
-          children: pageList,
-          controller: _pageController,
-          onPageChanged: (index) {
-            setState(() {
-              currentIndex = index;
-            });
-          },
-        ),
-      ),
+          backgroundColor: Color.fromRGBO(255, 244, 244, 1),
+          bottomNavigationBar: BottomNavigationBar(
+            type: BottomNavigationBarType.fixed,
+            items: bottomBars,
+            currentIndex: currentIndex,
+            onTap: (index) {
+              setState(() {
+                currentIndex = index;
+              });
+            },
+          ),
+          body: IndexedStack(
+            index: currentIndex,
+            children: pageList,
+          )),
     );
   }
 }
