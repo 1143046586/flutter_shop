@@ -11,7 +11,7 @@ class HomePage extends StatefulWidget {
   @override
   _HomePageState createState() => _HomePageState();
 }
-
+// with AutomaticKeepAliveClientMixin
 class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin {
   @override
   bool get wantKeepAlive => true;
@@ -19,6 +19,7 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin 
   void initState() {
     // TODO: implement initState
     super.initState();
+    print("homeInit");
   }
 
   @override
@@ -177,13 +178,29 @@ class RecommendItem extends StatelessWidget {
       height: ScreenUtil().setWidth(330),
       width: ScreenUtil().setWidth(250),
       padding: EdgeInsets.all(5),
-      decoration:
-          BoxDecoration(color: Colors.white, border: Border(right: BorderSide(color: Colors.black87, width: 1))),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border(
+          right: BorderSide(
+            color: Colors.black12,
+            width: 1,
+          ),
+        ),
+      ),
       child: Column(
         children: <Widget>[
           Image.network(recommendItem["image"]),
-          Text("￥${recommendItem["mallPrice"]}"),
-          Text("￥${recommendItem["price"]}")
+          Text(
+            "￥${recommendItem["mallPrice"]}",
+          ),
+          Text(
+            "￥${recommendItem["price"]}",
+            style: TextStyle(
+              decoration: TextDecoration.lineThrough,
+              color: Colors.grey,
+              fontSize: 12.0,
+            ),
+          )
         ],
       ),
     );
@@ -208,8 +225,12 @@ class Recommend extends StatelessWidget {
             height: ScreenUtil().setWidth(70),
             padding: EdgeInsets.all(5),
             alignment: Alignment.centerLeft,
-            decoration:
-                BoxDecoration(color: Colors.white, border: Border(bottom: BorderSide(color: Colors.black12, width: 1))),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              border: Border(
+                bottom: BorderSide(color: Colors.black12, width: 1),
+              ),
+            ),
           ),
           Container(
             height: ScreenUtil().setWidth(330),
