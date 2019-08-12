@@ -54,17 +54,11 @@ class _IndexPageState extends State<IndexPage> with SingleTickerProviderStateMix
             });
           },
         ),
-        // body: IndexedStack(
-        //   index: currentIndex,
-        //   children: pageList,
-        // )),
-        // body: TabBarView(
-        //   children: pageList,
-        //   controller: mController,
-        // ),
         body: PageView(
           children: pageList,
           controller: mPageController,
+          pageSnapping: true,
+          physics: NeverScrollableScrollPhysics(),
         ),
       ),
     );
