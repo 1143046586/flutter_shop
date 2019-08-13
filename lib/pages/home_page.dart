@@ -164,6 +164,7 @@ class NavList extends StatelessWidget {
       height: ScreenUtil().setHeight(320),
       padding: EdgeInsets.all(5.0),
       child: GridView(
+        physics: NeverScrollableScrollPhysics(),
         padding: EdgeInsets.all(4.0),
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           mainAxisSpacing: 3.0,

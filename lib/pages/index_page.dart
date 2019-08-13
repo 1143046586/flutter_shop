@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import './home_page.dart';
-import './serach_page.dart';
+import './category_page.dart';
 import './cart_page.dart';
 import './user_page.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -20,7 +20,7 @@ class _IndexPageState extends State<IndexPage> with SingleTickerProviderStateMix
   ];
   final List<Widget> pageList = [
     HomePage(),
-    SearchPage(),
+    CategoryPage(),
     CartPage(),
     UserPage(),
   ];
