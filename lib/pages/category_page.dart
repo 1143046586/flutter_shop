@@ -9,6 +9,8 @@ import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:flutter_easyrefresh/material_footer.dart';
 import 'package:flutter_easyrefresh/material_header.dart';
 
+bool enableControlFinishLoad = false;
+EasyRefreshController _controller = EasyRefreshController();
 class CategoryPage extends StatefulWidget {
   @override
   _CategoryPageState createState() => _CategoryPageState();
@@ -122,6 +124,9 @@ class _GoodsTypeState extends State<GoodsType> {
                   setState(() {
                     subSelectIndex = index;
                   });
+                  
+                  _controller.finishLoad(success: true,noMore: false);
+                  enableControlFinishLoad = false;
                   Provide.value<CategoryProvide>(context).setGoodsSubTypeList(
                     categoryProvide.goodsTypeList[index].bxMallSubDto,
                   );
@@ -187,6 +192,7 @@ class _GoodsSubTypeState extends State<GoodsSubType> {
   Widget build(BuildContext context) {
     return Container(
       height: ScreenUtil().setHeight(80),
+      alignment: Alignment.centerLeft,
       child: Provide<CategoryProvide>(
         builder: (BuildContext content, child, categoryProvide) {
           return ListView.builder(
@@ -206,6 +212,8 @@ class _GoodsSubTypeState extends State<GoodsSubType> {
                   ),
                 ),
                 onTap: () {
+                  _controller.finishLoad(success: true,noMore: false);
+                  enableControlFinishLoad = false;
                   Provide.value<CategoryProvide>(context).setGoodsSubTypeIndex(
                     index,
                     categoryProvide.goodsSubTypeList[index].mallCategoryId,
@@ -228,19 +236,86 @@ class GoodsList extends StatefulWidget {
 }
 
 class _GoodsListState extends State<GoodsList> {
+  Widget _goodsListItem(item) {
+    return Container(
+      width: ScreenUtil().setWidth(270),
+      padding: EdgeInsets.all(5.0),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black26,
+            offset: Offset(2.0, 2.0),
+            blurRadius: 1.0,
+            spreadRadius: 0.5,
+          )
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Image.network(item.image),
+          Text(
+            "${item.goodsName}",
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(
+              color: Colors.pink,
+            ),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
+              Text("￥${item.presentPrice}"),
+              Container(
+                margin: EdgeInsets.only(left: 15.0),
+                child: Text(
+                  "￥${item.oriPrice}",
+                  style: TextStyle(
+                    decoration: TextDecoration.lineThrough,
+                  ),
+                ),
+              ),
+            ],
+          )
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    
     return Container(
+      padding: EdgeInsets.all(3.5),
       child: EasyRefresh(
+        controller: _controller,
+        enableControlFinishLoad: enableControlFinishLoad,
         child: Provide<CategoryProvide>(
           builder: (BuildContext context, child, categoryProvide) {
             return Wrap(
+              spacing: 5.0,
+              runSpacing: 5.0,
+              alignment: WrapAlignment.start,
               children: categoryProvide.goodsList.map((item) {
-                return Text("${item.goodsName}");
+                return _goodsListItem(item);
               }).toList(),
             );
           },
         ),
+        onLoad: () async {
+          print("上拉加载");
+          Provide.value<CategoryProvide>(context).setGoodsList(callBack: () {
+            enableControlFinishLoad = true;
+            _controller.finishLoad(success: true, noMore: true);
+          });
+        },
+        onRefresh: () async {
+          print("下拉刷新");
+          Provide.value<CategoryProvide>(context).reloadGoodsList();
+        },
+        header: MaterialHeader(),
+        footer: MaterialFooter(),
       ),
     );
   }

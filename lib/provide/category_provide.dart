@@ -30,6 +30,7 @@ class CategoryProvide with ChangeNotifier {
     goodsListPage = 1;
     categoryId = list[0].mallCategoryId;
     categorySubId = "";
+    goodsList = [];
     notifyListeners();
     setGoodsList();
   }
@@ -39,11 +40,12 @@ class CategoryProvide with ChangeNotifier {
     goodsListPage = 1;
     categoryId = goodsTypeId;
     categorySubId = goodsSubTypeId;
+    goodsList = [];
     notifyListeners();
     setGoodsList();
   }
 
-  setGoodsList() async {
+  setGoodsList({callBack}) async {
     var data = {
       'categoryId': categoryId,
       'categorySubId': categorySubId,
@@ -53,9 +55,20 @@ class CategoryProvide with ChangeNotifier {
       var data = json.decode(val.toString());
       print('分类商品列表：>>>>>>>>>>>>>${data}');
       data = CategoryGoodsListModel.fromJson(data);
-      goodsList = data.data;
-      goodsListPage++;
-      notifyListeners();
+      if (data.data != null && data.data.length > 0) {
+        print("数据长度${data.data.length}");
+        goodsList.addAll(data.data);
+        goodsListPage++;
+        notifyListeners();
+      }else{
+        callBack();
+      }
     });
+  }
+
+  reloadGoodsList() {
+    goodsListPage = 1;
+    goodsList = [];
+    setGoodsList();
   }
 }

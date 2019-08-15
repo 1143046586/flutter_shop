@@ -29,6 +29,7 @@ dependencies:
   url_launcher: any
   flutter_easyrefresh: ^2.0.2
   provide: ^1.0.2
+  cached_network_image: ^1.1.1
 dev_dependencies:
   flutter_test:
     sdk: flutter
